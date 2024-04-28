@@ -5,6 +5,7 @@
 	import { onMount } from 'svelte';
 	import { socket } from '$lib/client/socket';
 
+
 	export let data: LayoutData;
 
 	const { project } = data;
@@ -13,6 +14,7 @@
 		api(`${PUBLIC_VITE_BACKEND_URL}/project/start-watch/${project.name}`);
 	}
 
+
 	onMount(() => {
 		socket.on('new_pcap', (val) => {
 			console.log('new pcap', val);
@@ -20,8 +22,8 @@
 	});
 </script>
 
-<div class="flex-1 flex">
-	<aside class="p-5 w-1/5 bg-white border-r overflow-auto max-h-[calc(100vh-75px)]">
+<div class="flex-1 flex max-h-[calc(100vh-75px)]">
+	<aside class="p-5 min-w-80 bg-white border-r overflow-auto max-h-[calc(100vh-75px)]">
 		<div>
 			<button class="btn" on:click={startListen}>Start listening files</button>
 		</div>
@@ -32,7 +34,7 @@
 		</div>
 	</aside>
 
-	<div class="p-7">
+	<div class="p-7 overflow-auto">
 		<slot />
 	</div>
 </div>

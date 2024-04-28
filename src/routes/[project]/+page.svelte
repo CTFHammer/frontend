@@ -3,7 +3,7 @@
 	import { api, post } from '$lib/client/requests';
 	import { PUBLIC_VITE_BACKEND_URL } from '$env/static/public';
 	import type { LayoutData } from '../../../.svelte-kit/types/src/routes/[project]/$types';
-
+	import Conversation from '$lib/components/project/conversation.svelte';
 
 	export let data: LayoutData;
 
@@ -30,10 +30,14 @@
 	}
 </script>
 
-<div>
+<div class="">
 	<div>
 		<label for="port">Specify port</label>
 		<Input bind:value={port} />
 		<button class="btn" on:click={savePort}>Save</button>
+	</div>
+
+	<div>
+		<Conversation project_name="{data.project.name}"></Conversation>
 	</div>
 </div>
