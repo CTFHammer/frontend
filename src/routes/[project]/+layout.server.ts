@@ -1,5 +1,6 @@
 import { PUBLIC_VITE_BACKEND_URL } from '$env/static/public';
-import { CustomError, api } from '$lib/components/requests';
+import { api } from '$lib/client/requests';
+import { CustomError } from '$lib/components/requests';
 import type { Project } from './store';
 import { error } from '@sveltejs/kit';
 

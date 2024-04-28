@@ -1,5 +1,6 @@
 import { PUBLIC_VITE_BACKEND_URL } from "$env/static/public"
-import { error } from '@sveltejs/kit';
+import { api } from "$lib/client/requests"
+
 export class CustomError{
   message: string
   status?: string
@@ -33,10 +34,3 @@ export function getListContainer(): Promise<getListContainerResponse[] | CustomE
   return api<getListContainerResponse[]>(`${BACKEND_URL}/docker/list`);
 }
 
-export async function api<T>(url: string): Promise<T> {
-  const response = await fetch(url);
-  if (!response.ok) {
-    error(404, { code: '404', message: 'Project not found' });
-  }
-  return await (response.json() as Promise<T>);
-}
