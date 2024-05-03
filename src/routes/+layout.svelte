@@ -62,7 +62,7 @@
 			>
 		</div>
 		<div class="flex justify-center">
-			<span class="text-lg font-bold">CTF Hammer</span>
+			<a class="text-lg font-bold" href="/">CTF Hammer</a>
 		</div>
 
 		<div class="flex-1 text-end"></div>

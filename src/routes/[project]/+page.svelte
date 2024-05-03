@@ -8,6 +8,10 @@
 	import { invalidate, invalidateAll } from '$app/navigation';
 	import type { Project } from '$lib/types/general';
 	import { page } from '$app/stores';
+	import {
+		addErrorNotification,
+		addSuccessNotification
+	} from '$lib/components/notifications/notificationStore';
 	// import { PageData } from '../$types';
 
 	// export let data: PageData;
@@ -29,23 +33,27 @@
 			console.error('HTTP error', response.status);
 			const errorData = await response.json();
 			console.error('Error response:', errorData);
+			addErrorNotification('Save', 'Cannot save project');
 		} else {
 			const responseData = await response.json();
+			addSuccessNotification('Save', 'Saved!');
 			console.log(responseData);
 		}
 	}
 </script>
 
-<Single>
-	<div class="">
-		<div>
-			<label for="port">Specify port</label>
-			<Input bind:value={port} />
-			<button class="btn" on:click={savePort}>Save</button>
-		</div>
+<div class="w-full">
+	<Single>
+		<span slot="title">Manage setting of this project</span>
+		<button slot="action" class="btn btn-out ml-auto" on:click={savePort}>Save</button>
+		<div class="">
+			<div>
+				<Input bind:value={port} label="Specify port" />
+			</div>
 
-		<div>
-			<!-- <Conversation project_name={data.project.name}></Conversation> -->
+			<div>
+				<!-- <Conversation project_name={data.project.name}></Conversation> -->
+			</div>
 		</div>
-	</div>
-</Single>
+	</Single>
+</div>
