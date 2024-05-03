@@ -16,3 +16,15 @@ export interface Project {
 	name: string;
 	port: number;
 }
+
+export enum CTFNotificationType {
+  success,
+  error
+}
+
+export interface CTFNotification{
+  id?: string
+  type: CTFNotificationType,
+  message: string,
+  title: string,
+}

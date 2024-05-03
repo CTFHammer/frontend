@@ -8,6 +8,7 @@
 	import Portal from '$lib/components/Portal/Portal.svelte';
 	import Input from '$lib/components/input.svelte';
 	import Single from '$lib/components/layouts/single.svelte';
+	import Notification from '$lib/components/notifications/notification.svelte';
 
 	export let data: LayoutData;
 	let portal: Portal;
@@ -22,6 +23,8 @@
 	}
 </script>
 
+<Notification></Notification>
+
 <Portal bind:this={portal}>
 	<div class="">
 		<label>New Name</label>
@@ -30,10 +33,10 @@
 	</div>
 </Portal>
 
-<div class="dark:bg-dark-yellow-800 flex min-h-screen flex-col bg-yellow-400 bg-opacity-10">
+<div class="flex min-h-screen flex-col bg-yellow-400 bg-opacity-10 dark:bg-dark-yellow-800">
 	<div
-		class="dark:bg-dark-yellow-800 dark:border-dark-yellow-400 sticky top-0 flex items-center bg-white
-    px-10 py-4 align-middle dark:border-b dark:text-gray-100"
+		class="sticky top-0 flex items-center bg-white px-10 py-4
+    align-middle dark:border-b dark:border-dark-yellow-400 dark:bg-dark-yellow-800 dark:text-gray-100"
 	>
 		<div class=" flex flex-1 items-center gap-5 align-middle">
 			<SelectService projects={data.projects} />

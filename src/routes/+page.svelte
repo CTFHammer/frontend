@@ -1,20 +1,23 @@
 <script lang="ts">
 	import Input from '$lib/components/input.svelte';
 	import { post } from '$lib/client/requests';
-	import type { Settings } from '$lib/types/general';
+	import { type Settings, CTFNotificationType } from '$lib/types/general';
 
 	import { storeSetting } from '$lib/store';
 	import Single from '$lib/components/layouts/single.svelte';
 	import type { PageData } from './$types';
+	import { addNotification } from '$lib/components/notifications/notificationStore';
 
 	export let data: PageData;
 
-	let regexFlag: string | null;
+	let regexFlag: string = '';
 	let stringToTest = '';
 	let result = false;
+	let dirty = false;
 	let reCheck: RegExp;
 
 	function updateRegex(event: CustomEvent<any>) {
+		dirty = true;
 		regexFlag = event.detail.value;
 		if (regexFlag) reCheck = new RegExp(regexFlag);
 	}
@@ -25,14 +28,26 @@
 	}
 
 	function save() {
-		if (regexFlag)
-			post<Settings, { saved: Settings }>('settings', { regexFlag }).then((res) => {
-				console.log(res.saved);
+		post<Settings, any>('settings', { regexFlag })
+			.then((res) => {
+				addNotification({
+					title: 'Database',
+					message: 'Saved successfuly',
+					type: CTFNotificationType.success
+				});
 
 				if (res.saved) {
 					storeSetting.setStore(res.saved);
 				}
+			})
+			.catch(() => {
+				addNotification({
+					title: 'Database',
+					message: 'Saved successfuly',
+					type: CTFNotificationType.error
+				});
 			});
+		dirty = false;
 	}
 
 	storeSetting.store.subscribe((setting) => {
@@ -41,9 +56,12 @@
 	});
 </script>
 
-<div class="mx-auto w-[72em]">
+<div class="mx-auto w-[80%] max-w-screen-lg">
 	<Single>
 		<h1 slot="title" class="">Hello in CTF Hammer</h1>
+		<button slot="action" class="btn btn-out ml-auto block" disabled={!dirty} on:click={save}
+			>Save</button
+		>
 
 		<div>
 			<div class="flex max-w-md flex-col gap-5">
@@ -61,7 +79,6 @@
 					<Input on:inputChange={checkRegex} label="Test you regex" />
 					<p class="my-2">Test result: {result ? '😀' : '😔'}</p>
 				</div>
-				<button class="btn btn-out" on:click={save}>Save</button>
 			</div>
 		</div>
 	</Single>
@@ -73,7 +90,7 @@
 			{#each data.projects as project}
 				<a
 					href={project.name}
-					class="dark:border-dark-yellow-400 dark:bg-dark-yellow-400 flex flex-col rounded border p-5"
+					class="flex flex-col rounded border p-5 dark:border-dark-yellow-400 dark:bg-dark-yellow-400"
 				>
 					<span>Name: <span class="inline-pre">{project.name}</span></span>
 				</a>
