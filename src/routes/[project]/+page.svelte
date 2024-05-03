@@ -4,11 +4,11 @@
 	import { PUBLIC_VITE_BACKEND_URL } from '$env/static/public';
 	import type { LayoutData } from '../../../.svelte-kit/types/src/routes/[project]/$types';
 	import Conversation from '$lib/components/project/conversation.svelte';
+	import Single from '$lib/components/layouts/single.svelte';
 
 	export let data: LayoutData;
 
 	let port = data.project.port || 0;
-
 
 	async function savePort() {
 		const response = await fetch(`${PUBLIC_VITE_BACKEND_URL}/project/set-port`, {
@@ -30,14 +30,16 @@
 	}
 </script>
 
-<div class="">
-	<div>
-		<label for="port">Specify port</label>
-		<Input bind:value={port} />
-		<button class="btn" on:click={savePort}>Save</button>
-	</div>
+<Single>
+	<div class="">
+		<div>
+			<label for="port">Specify port</label>
+			<Input bind:value={port} />
+			<button class="btn" on:click={savePort}>Save</button>
+		</div>
 
-	<div>
-		<Conversation project_name="{data.project.name}"></Conversation>
+		<div>
+			<Conversation project_name={data.project.name}></Conversation>
+		</div>
 	</div>
-</div>
+</Single>

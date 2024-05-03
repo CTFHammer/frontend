@@ -1,8 +1,7 @@
 import type { CustomError } from '$lib/components/requests';
 import * as db from '$lib/server/database';
-import type { Settings } from '$lib/types/general';
+import type { Project, Settings } from '$lib/types/general';
 import { api } from '$lib/client/requests';
-import type { Project } from './[project]/store';
 import { PUBLIC_VITE_BACKEND_URL } from '$env/static/public';
 import { error } from '@sveltejs/kit';
 
@@ -12,11 +11,11 @@ export async function load() {
 
 async function getProjects() {
 	try {
-		return await api<Project>(`${PUBLIC_VITE_BACKEND_URL}/project/list`);
+		return await api<Project[]>(`${PUBLIC_VITE_BACKEND_URL}/project/list`);
 	} catch (e) {
-		console.log(e);
+		console.error(e);
 		error(500, {
-			message: 'Project not load properly',
+			message: 'Projects not load properly',
 			code: 'NOT_FOUND'
 		});
 	}

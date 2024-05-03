@@ -10,3 +10,9 @@ export interface Conversation {
 	project_name: string;
 	timestamp: string;
 }
+
+export interface Project {
+	id: string;
+	name: string;
+	port: number;
+}

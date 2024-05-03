@@ -14,7 +14,6 @@ export async function load({ params }): Promise<any> {
 			project: projectResponse
 		};
 	} catch {
-		console.log('qui');
 		error(404, { code: '404', message: 'Project not found' });
 	}
 }

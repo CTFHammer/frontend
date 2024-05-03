@@ -26,10 +26,13 @@
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div
 		use:attachToBody
-		class="fixed z-50 w-full h-full flex items-center justify-center bg-yellow-700 bg-opacity-40 top-0 left-0"
+		class=" dark:border-dark-yellow-400 fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center
+    bg-yellow-700 bg-opacity-40 dark:text-white"
 		on:click={closeOut}
 	>
-		<div class="bg-white w-[60%] h-[80%] rounded border p-5 flex flex-col">
+		<div
+			class="dark:border-dark-yellow-400 flex h-[80%] w-[60%] flex-col rounded border bg-white p-5 dark:bg-dark-yellow-600"
+		>
 			<div class="flex justify-end">
 				<button class="btn" on:click={hide}>Close</button>
 			</div>
