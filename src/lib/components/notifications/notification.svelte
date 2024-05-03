@@ -21,9 +21,20 @@
 </script>
 
 <div
-	class="absolute bottom-0 right-9 z-50 flex w-[400px] flex-col gap-2 overflow-hidden pb-5 text-white"
+	class="fixed bottom-0 right-9 z-50 flex w-[400px] flex-col gap-2 overflow-hidden pb-5 text-white"
 	use:attachToBody
 >
+	<!-- <div in:fly={{ y: 100, duration: 100 }} out:fade={{ duration: 100 }}>
+		<div
+			class="flex rounded {getType(CTFNotificationType.success)} border dark:border-dark-yellow-400"
+		>
+			<div class="w-1"></div>
+			<div class="flex flex-1 flex-col bg-dark-yellow-600 p-3 pl-5">
+				<span class="text-sm font-bold">prova</span>
+				<p class="text-sm">Test</p>
+			</div>
+		</div>
+	</div> -->
 	{#each allNotification as notification (notification.id)}
 		<div in:fly={{ y: 100, duration: 100 }} out:fade={{ duration: 100 }}>
 			<div class="flex rounded {getType(notification.type)} border dark:border-dark-yellow-400">

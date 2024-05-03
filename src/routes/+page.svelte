@@ -2,33 +2,60 @@
 	import Input from '$lib/components/input.svelte';
 	import { post } from '$lib/client/requests';
 	import { type Settings, CTFNotificationType } from '$lib/types/general';
-
 	import { storeSetting } from '$lib/store';
 	import Single from '$lib/components/layouts/single.svelte';
-	import type { PageData } from './$types';
-	import { addNotification } from '$lib/components/notifications/notificationStore';
+	import {
+		addErrorNotification,
+		addNotification,
+		addSuccessNotification
+	} from '$lib/components/notifications/notificationStore';
+	import { PUBLIC_VITE_BACKEND_URL } from '$env/static/public';
+	import type { LayoutData } from './$types';
 
-	export let data: PageData;
+	export let data: LayoutData;
 
-	let regexFlag: string = '';
+	let regexFlag = data.settings.regexFlag || '';
 	let stringToTest = '';
 	let result = false;
-	let dirty = false;
+	let dirty = true;
 	let reCheck: RegExp;
+	let vulIp = data.settings.vulIp || '';
+	let vulPass = data.settings.vulPass || '';
+	let vulPort = data.settings.vulPort || '';
 
-	function updateRegex(event: CustomEvent<any>) {
-		dirty = true;
-		regexFlag = event.detail.value;
-		if (regexFlag) reCheck = new RegExp(regexFlag);
+	async function testConntetion() {
+		try {
+			const rest = await fetch(`${PUBLIC_VITE_BACKEND_URL}/test-vul-connection`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ vulIp, vulPass, vulPort: parseInt(vulPort) })
+			});
+
+			if (rest.ok) {
+				const body = await rest.json();
+				console.log(body);
+				if (body.status == 1) {
+					addErrorNotification('SSH result', 'nope');
+				} else {
+					addSuccessNotification('SSH result', 'connected');
+				}
+			}
+		} catch {
+			addErrorNotification('Server Error', 'generic error');
+		}
 	}
 
 	function checkRegex(event: CustomEvent<any>) {
 		stringToTest = event.detail.value;
+		reCheck = new RegExp(regexFlag);
+
 		result = reCheck.test(stringToTest);
 	}
 
 	function save() {
-		post<Settings, any>('settings', { regexFlag })
+		post<Settings, any>('settings', { regexFlag, vulIp, vulPort: parseInt(vulPort), vulPass })
 			.then((res) => {
 				addNotification({
 					title: 'Database',
@@ -49,11 +76,6 @@
 			});
 		dirty = false;
 	}
-
-	storeSetting.store.subscribe((setting) => {
-		regexFlag = setting.regexFlag;
-		if (regexFlag) reCheck = new RegExp(regexFlag);
-	});
 </script>
 
 <div class="mx-auto w-[80%] max-w-screen-lg">
@@ -66,18 +88,23 @@
 		<div>
 			<div class="flex max-w-md flex-col gap-5">
 				<div>
-					<Input
-						prefix="/"
-						suffix="/"
-						on:inputChange={updateRegex}
-						value={regexFlag}
-						label="Set you regex flag"
-					/>
-				</div>
-
-				<div>
+					<Input prefix="/" suffix="/" bind:value={regexFlag} label="Set you regex flag" />
 					<Input on:inputChange={checkRegex} label="Test you regex" />
 					<p class="my-2">Test result: {result ? '😀' : '😔'}</p>
+				</div>
+
+				<hr />
+				<div>
+					<p class="sub-title">Vulbox Info</p>
+					<span>Insert the info of your vulbox</span>
+				</div>
+				<div class="flex gap-3 flex-col">
+					<Input label="Vulbox ip" bind:value={vulIp} />
+					<Input label="Vulbox password" bind:value={vulPass} />
+					<Input label="Vulbox Port" bind:value={vulPort} />
+					<div>
+						<button class="btn btn-out" on:click={testConntetion}>Test connection</button>
+					</div>
 				</div>
 			</div>
 		</div>

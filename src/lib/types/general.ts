@@ -1,5 +1,8 @@
 export interface Settings {
 	regexFlag: string;
+  vulIp: string,
+  vulPass: string
+  vulPort: number
 }
 
 export interface Conversation {

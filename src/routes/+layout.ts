@@ -7,7 +7,7 @@ import * as db from '$lib/database';
 
 export async function load({ depends }) {
 	depends('app:projects');
-	return { settings: await db.getSettings(), projects: await getProjects() };
+	return { settings: (await db.getSettings()) as Settings, projects: await getProjects() };
 }
 
 async function getProjects() {
