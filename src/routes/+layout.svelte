@@ -9,6 +9,10 @@
 	import Input from '$lib/components/input.svelte';
 	import Single from '$lib/components/layouts/single.svelte';
 	import Notification from '$lib/components/notifications/notification.svelte';
+	import {
+		addErrorNotification,
+		addSuccessNotification
+	} from '$lib/components/notifications/notificationStore';
 
 	export let data: LayoutData;
 	let portal: Portal;
@@ -16,8 +20,17 @@
 	storeSetting.initStore(data as any);
 
 	function createNewProject() {
-		api(`${PUBLIC_VITE_BACKEND_URL}/project/create/${newName}`).then((res) => {
-			console.log(res);
+		fetch(`${PUBLIC_VITE_BACKEND_URL}/project/create/${newName}`).then(async (res) => {
+			if (!res.ok) {
+				if (res.status == 409) {
+					addErrorNotification('Project', `Project ${newName} already exists!`);
+					return;
+				}
+				addErrorNotification('Project', `Error ${res.status} `);
+				return;
+			}
+
+			addSuccessNotification('Project', `Project ${newName} created!`);
 			portal.hide();
 		});
 	}
@@ -27,8 +40,7 @@
 
 <Portal bind:this={portal}>
 	<div class="">
-		<label>New Name</label>
-		<Input bind:value={newName} />
+		<Input bind:value={newName} label="New name" />
 		<button class="btn" on:click={createNewProject}>Salva</button>
 	</div>
 </Portal>

@@ -4,10 +4,12 @@
 	import { PUBLIC_VITE_BACKEND_URL } from '$env/static/public';
 	import { onMount } from 'svelte';
 	import { socket } from '$lib/client/socket';
-
 	export let data: LayoutData;
 
-	const { project } = data;
+	let project = data.project;
+	$: if (data && data.project) {
+    project = data.project
+	}
 
 	function startListen() {
 		api(`${PUBLIC_VITE_BACKEND_URL}/project/start-watch/${project.name}`);
@@ -31,7 +33,7 @@
 		</div>
 		<div class="flex flex-col">
 			<p>Project:</p>
-			<span class="text-2xl font-bold text-yellow-600">{project.name}</span>
+			<span class="text-2xl font-bold text-yellow-600">{data.project.name}</span>
 			<span>Another info info</span>
 		</div>
 	</aside>

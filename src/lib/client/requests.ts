@@ -24,5 +24,6 @@ export async function api<T>(url: string): Promise<T> {
 	if (!response.ok) {
 		error(404, { code: '404', message: 'Project not found' });
 	}
+
 	return await (response.json() as Promise<T>);
 }

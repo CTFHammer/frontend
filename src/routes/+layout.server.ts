@@ -6,7 +6,7 @@ import { PUBLIC_VITE_BACKEND_URL } from '$env/static/public';
 import { error } from '@sveltejs/kit';
 
 export async function load() {
-	return { settings: db.getSettings(), projects: await getProjects() };
+	return { settings: await db.getSettings(), projects: await getProjects() };
 }
 
 async function getProjects() {

@@ -5,8 +5,14 @@
 	import type { LayoutData } from '../../../.svelte-kit/types/src/routes/[project]/$types';
 	import Conversation from '$lib/components/project/conversation.svelte';
 	import Single from '$lib/components/layouts/single.svelte';
+	import { invalidate, invalidateAll } from '$app/navigation';
+	import type { Project } from '$lib/types/general';
+	import { page } from '$app/stores';
+	// import { PageData } from '../$types';
 
-	export let data: LayoutData;
+	// export let data: PageData;
+
+	export let data;
 
 	let port = data.project.port || 0;
 
@@ -39,7 +45,7 @@
 		</div>
 
 		<div>
-			<Conversation project_name={data.project.name}></Conversation>
+			<!-- <Conversation project_name={data.project.name}></Conversation> -->
 		</div>
 	</div>
 </Single>

@@ -7,7 +7,6 @@
 	let allNotification: CTFNotification[] = [];
 
 	OBSnotification.subscribe((val) => {
-		console.log(val);
 		allNotification = val;
 	});
 

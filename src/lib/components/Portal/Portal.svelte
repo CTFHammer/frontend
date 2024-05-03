@@ -26,7 +26,7 @@
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div
 		use:attachToBody
-		class=" dark:border-dark-yellow-400 fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center
+		class=" dark:border-dark-yellow-400 fixed left-0 top-0 z-40 flex h-full w-full items-center justify-center
     bg-yellow-700 bg-opacity-40 dark:text-white"
 		on:click={closeOut}
 	>
