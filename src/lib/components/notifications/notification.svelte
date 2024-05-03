@@ -25,7 +25,7 @@
 	use:attachToBody
 >
 	{#each allNotification as notification (notification.id)}
-		<div in:fly={{ y: 100, duration: 500 }} out:fade>
+		<div in:fly={{ y: 100, duration: 100 }} out:fade={{ duration: 100 }}>
 			<div class="flex rounded {getType(notification.type)} border dark:border-dark-yellow-400">
 				<div class="w-1"></div>
 				<div class="flex flex-1 flex-col bg-dark-yellow-600 p-3 pl-5">

@@ -1,11 +1,14 @@
 import type { CustomError } from '$lib/components/requests';
-import * as db from '$lib/server/database';
 import type { Project, Settings } from '$lib/types/general';
 import { api } from '$lib/client/requests';
 import { PUBLIC_VITE_BACKEND_URL } from '$env/static/public';
 import { error } from '@sveltejs/kit';
+import * as db from '$lib/database';
 
-export async function load() {
+export async function load({ depends }) {
+	depends('app:projects');
+	console.log('rerun');
+
 	return { settings: await db.getSettings(), projects: await getProjects() };
 }
 

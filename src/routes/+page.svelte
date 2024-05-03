@@ -94,6 +94,8 @@
 				>
 					<span>Name: <span class="inline-pre">{project.name}</span></span>
 				</a>
+			{:else}
+				<div>No projects?! Come one</div>
 			{/each}
 		</div>
 	</Single>

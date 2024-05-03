@@ -13,6 +13,7 @@
 		addErrorNotification,
 		addSuccessNotification
 	} from '$lib/components/notifications/notificationStore';
+	import { invalidate } from '$app/navigation';
 
 	export let data: LayoutData;
 	let portal: Portal;
@@ -29,7 +30,7 @@
 				addErrorNotification('Project', `Error ${res.status} `);
 				return;
 			}
-
+			invalidate('app:projects');
 			addSuccessNotification('Project', `Project ${newName} created!`);
 			portal.hide();
 		});
