@@ -14,6 +14,8 @@
 		addSuccessNotification
 	} from '$lib/components/notifications/notificationStore';
 	import { invalidate } from '$app/navigation';
+	import { onMount } from 'svelte';
+	import { socket } from '$lib/client/socket';
 
 	export let data: LayoutData;
 	let portal: Portal;
@@ -35,6 +37,12 @@
 			portal.hide();
 		});
 	}
+
+	onMount(() => {
+		// socket.on('debug', (val: { project_name: string; conversations: string }) => {
+		// 	console.log('messaggio ricevuto', val);
+		// });
+	});
 </script>
 
 <Notification></Notification>

@@ -13,7 +13,6 @@
 			.then((containers) => {
 				if (!(containers instanceof CustomError)) {
 					portal.show();
-					console.log(containers);
 
 					listContainer = containers;
 				}

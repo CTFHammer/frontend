@@ -6,7 +6,8 @@
 	import { socket } from '$lib/client/socket';
 	import {
 		addSuccessNotification,
-		addErrorNotification
+		addErrorNotification,
+		addNotification
 	} from '$lib/components/notifications/notificationStore';
 	import { goto, invalidate } from '$app/navigation';
 	export let data: LayoutData;
@@ -14,11 +15,26 @@
 	let project = data.project;
 	$: if (data && data.project) {
 		project = data.project;
-		console.log(project);
 	}
 
-	function startListen() {
-		api(`${PUBLIC_VITE_BACKEND_URL}/project/start-watch/${project.name}`);
+	async function startListen() {
+		const ris = await fetch(`${PUBLIC_VITE_BACKEND_URL}/project/start-tcp-dump/${project.name}`);
+		console.log(await ris.json());
+	}
+
+	async function analyzePcap() {
+		const ris = await fetch(`${PUBLIC_VITE_BACKEND_URL}/project/analyze-pcap/${project.name}`);
+		console.log(await ris.json());
+	}
+
+	async function stopTcpdump() {
+		const ris = await fetch(`${PUBLIC_VITE_BACKEND_URL}/project/stop-tcp-dump/${project.name}`);
+		console.log(await ris.json());
+	}
+
+	async function dowloadPcap() {
+		const ris = await fetch(`${PUBLIC_VITE_BACKEND_URL}/project/download-dump/${project.name}`);
+		console.log(await ris.json());
 	}
 
 	async function deleteProject() {
@@ -39,8 +55,12 @@
 	}
 
 	onMount(() => {
-		socket.on('new_pcap', (val) => {
-			console.log('new pcap', val);
+		socket.on('new_conversations', (val) => {
+			console.log(val);
+			addSuccessNotification(
+				`New conversation for "${val.project_name}"`,
+				`Added ${val.conversations} new conversations!`
+			);
 		});
 	});
 </script>
@@ -58,7 +78,12 @@
 
 		<div class="flex flex-col gap-2 my-3">
 			<div>
-				<button class="btn" on:click={startListen}>Start listening files</button>
+				<button class="btn" on:click={startListen}>Start tcpdump</button>
+				<button class="btn" on:click={stopTcpdump}>Stop tcpdump</button>
+			</div>
+			<div>
+				<button class="btn" on:click={dowloadPcap}>Download pcap</button>
+				<button class="btn" on:click={analyzePcap}>Analyze pcap</button>
 			</div>
 			<button class="btn bg-red-600 w-fit" on:click={deleteProject}>Delete</button>
 		</div>

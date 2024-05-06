@@ -11,6 +11,7 @@
 	} from '$lib/components/notifications/notificationStore';
 	import { PUBLIC_VITE_BACKEND_URL } from '$env/static/public';
 	import type { LayoutData } from './$types';
+	import { invalidate } from '$app/navigation';
 
 	export let data: LayoutData;
 
@@ -22,6 +23,7 @@
 	let vulIp = data.settings.vulIp || '';
 	let vulPass = data.settings.vulPass || '';
 	let vulPort = data.settings.vulPort || '';
+	let vulUser = data.settings.vulUser || '';
 
 	async function testConntetion() {
 		try {
@@ -30,7 +32,7 @@
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({ vulIp, vulPass, vulPort: parseInt(vulPort) })
+				body: JSON.stringify({ vulIp, vulPass, vulUser, vulPort: parseInt(vulPort) })
 			});
 
 			if (rest.ok) {
@@ -55,7 +57,13 @@
 	}
 
 	function save() {
-		post<Settings, any>('settings', { regexFlag, vulIp, vulPort: parseInt(vulPort), vulPass })
+		post<Settings, any>('settings', {
+			regexFlag,
+			vulIp,
+			vulUser,
+			vulPort: parseInt(vulPort),
+			vulPass
+		})
 			.then((res) => {
 				addNotification({
 					title: 'Database',
@@ -64,8 +72,10 @@
 				});
 
 				if (res.saved) {
+					invalidate('app:settings');
 					storeSetting.setStore(res.saved);
 				}
+				dirty = true;
 			})
 			.catch(() => {
 				addNotification({
@@ -74,7 +84,6 @@
 					type: CTFNotificationType.error
 				});
 			});
-		dirty = false;
 	}
 </script>
 
@@ -100,6 +109,7 @@
 				</div>
 				<div class="flex gap-3 flex-col">
 					<Input label="Vulbox ip" bind:value={vulIp} />
+					<Input label="Vulbox User" bind:value={vulUser} />
 					<Input label="Vulbox password" bind:value={vulPass} />
 					<Input label="Vulbox Port" bind:value={vulPort} />
 					<div>
@@ -124,6 +134,16 @@
 			{:else}
 				<div>No projects?! Come one</div>
 			{/each}
+		</div>
+	</Single>
+
+	<Single>
+		<h1 slot="title">Info about current settings (most recently saved)</h1>
+		<div>
+			<p>Vul ssh: <span class="inline-pre">{data.settings.ssh_active}</span></p>
+			<p>
+				Docker present on vulbox: <span class="inline-pre">{data.settings.ssh_docker_present}</span>
+			</p>
 		</div>
 	</Single>
 </div>
