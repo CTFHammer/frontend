@@ -1,10 +1,11 @@
 <script lang="ts">
 	import Single from '$lib/components/layouts/single.svelte';
 	import type { LayoutData } from './$types';
-
+	import { parseDate } from '$lib/date';
+	import type { Conversation } from '$lib/types/general';
 	export let data: LayoutData;
 
-	let conversations = data.conversations;
+	let conversations: Conversation[] = data.conversations;
 </script>
 
 <Single>
@@ -17,7 +18,8 @@
 					href="/{data.project.name}/conversations/{con['_id']['$oid']}"
 					class="py-2 px-3 border dark:border-dark-yellow-400"
 				>
-					<span>{con['timestamp']}</span>
+					<span>{parseDate(con['timestamp'])}</span>
+					<p class="cool-pre">flag: {con.flag_tag}</p>
 				</a>
 			{/each}
 		</div>

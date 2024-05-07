@@ -18,7 +18,11 @@
 	}
 
 	.inline-pre {
-		@apply inline rounded bg-gray-200 p-1 text-sm dark:bg-dark-yellow-350;
+		@apply inline rounded bg-gray-200 p-1 text-sm dark:bg-dark-yellow-400;
+	}
+
+	.cool-pre {
+		@apply rounded bg-gray-200 p-1 text-sm dark:bg-dark-yellow-400;
 	}
 
 	.sub-title {

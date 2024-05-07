@@ -46,14 +46,8 @@
 	<Single>
 		<span slot="title">Manage setting of this project</span>
 		<button slot="action" class="btn btn-out ml-auto" on:click={savePort}>Save</button>
-		<div class="">
-			<div>
-				<Input bind:value={port} label="Specify port" />
-			</div>
-
-			<div>
-				<!-- <Conversation project_name={data.project.name}></Conversation> -->
-			</div>
+		<div class="flex gap-2">
+			<Input bind:value={port} label="Specify port" />
 		</div>
 	</Single>
 </div>

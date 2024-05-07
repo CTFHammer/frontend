@@ -24,6 +24,7 @@
 	let vulPass = data.settings.vulPass || '';
 	let vulPort = data.settings.vulPort || '';
 	let vulUser = data.settings.vulUser || '';
+	let durationDump = data.settings.durationDump || '';
 
 	async function testConntetion() {
 		try {
@@ -32,7 +33,12 @@
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({ vulIp, vulPass, vulUser, vulPort: parseInt(vulPort) })
+				body: JSON.stringify({
+					vulIp,
+					vulPass,
+					vulUser,
+					vulPort: parseInt(vulPort as string)
+				})
 			});
 
 			if (rest.ok) {
@@ -61,9 +67,10 @@
 			regexFlag,
 			vulIp,
 			vulUser,
-			vulPort: parseInt(vulPort),
-			vulPass
-		})
+			vulPort: parseInt(vulPort as string),
+			vulPass,
+			durationDump: parseFloat(durationDump as string)
+		} as Settings)
 			.then((res) => {
 				addNotification({
 					title: 'Database',
@@ -115,6 +122,7 @@
 					<div>
 						<button class="btn btn-out" on:click={testConntetion}>Test connection</button>
 					</div>
+					<Input label="Duration dump" bind:value={durationDump} />
 				</div>
 			</div>
 		</div>
